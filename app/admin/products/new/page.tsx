@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function NewProductPage() {
 
   return (
     <div className="p-6">
+      <Link className="bg-black text-white px-1 py-1 rounded" href={'/admin/products/'} > see products </Link>
       <h1 className="text-xl font-bold mb-4">Create New Product</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <input

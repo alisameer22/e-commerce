@@ -1,30 +1,39 @@
-// middleware.ts
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { jwtVerify } from 'jose';
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
   const token = req.cookies.get('token')?.value;
-  const url = req.nextUrl;
 
-  if (url.pathname.startsWith('/admin')) {
-    if (!token) return NextResponse.redirect(new URL('/login', req.url));
+  // 👀 Only protect /admin routes
+  if (pathname.startsWith('/admin')) {
+    if (!token) {
+      console.log('⛔ No token, redirecting to /login');
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
 
     try {
-      const payload = jwt.verify(token, process.env.JWT_SECRET!) as any;
+      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+      const { payload } = await jwtVerify(token, secret);
+
+      // 🛑 If token doesn’t include storeId, block access
       if (!payload?.storeId) {
+        console.log('⛔ Token exists but no storeId — redirecting to /unauthorized');
         return NextResponse.redirect(new URL('/unauthorized', req.url));
       }
 
-      // Add storeId to request (optional enhancement)
-      req.headers.set('x-store-id', payload.storeId);
-    } catch (e) {
+      console.log('✅ Authenticated:', payload);
+      return NextResponse.next();
+    } catch (err) {
+      console.error('⛔ Invalid token:', err);
       return NextResponse.redirect(new URL('/login', req.url));
     }
   }
 
+  // ✅ Allow everything else
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*'], // Only match /admin/** routes
 };

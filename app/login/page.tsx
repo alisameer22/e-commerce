@@ -16,7 +16,7 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      router.push('/admin/products');
+      router.push('/admin/products/new');
     } else {
       alert('Invalid credentials');
     }
