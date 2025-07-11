@@ -1,13 +1,12 @@
 // app/[storeName]/page.tsx
 import { Prisma, PrismaClient } from '@/lib/generated/prisma';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
 
 const prisma = new PrismaClient();
 
-interface Props {
+type PageProps = {
   params: { storeName: string };
-}
+};
 
 export default async function Storefront({ params }: Props) {
   const store = await prisma.store.findFirst({
@@ -24,7 +23,7 @@ export default async function Storefront({ params }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{store.name}</h1>
+              <h1  className="italic text-3xl font-bold text-gray-900">{store.name}</h1>
               <p className="text-gray-600 mt-1">Premium Products Collection</p>
             </div>
             <div className="flex items-center space-x-4">
@@ -54,10 +53,10 @@ export default async function Storefront({ params }: Props) {
                 {/* Product Image */}
                 <div className="relative h-48 bg-gray-100 overflow-hidden">
                   <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-40 object-cover mb-2 rounded"
-            />
+                    src={product.image || '/placeholder-product.jpg'}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-300" />
                 </div>
 
