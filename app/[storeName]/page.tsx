@@ -1,5 +1,6 @@
 // app/[storeName]/page.tsx
 import { Prisma, PrismaClient } from '@/lib/generated/prisma';
+// import { Props } from 'next/dist/client/script';
 import { notFound } from 'next/navigation';
 
 const prisma = new PrismaClient();
@@ -8,7 +9,7 @@ type PageProps = {
   params: { storeName: string };
 };
 
-export default async function Storefront({ params }: Props) {
+export default async function Storefront({ params }: PageProps) {
   const store = await prisma.store.findFirst({
     where: { name: decodeURIComponent(params.storeName) },
     include: { products: true },
