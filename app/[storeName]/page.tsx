@@ -9,7 +9,7 @@ type PageProps = {
   params: { storeName: string };
 };
 
-export default async function Storefront({ params }: PageProps) {
+export default async function Storefront({ params }: { params: { storeName: string } }) {
   const store = await prisma.store.findFirst({
     where: { name: decodeURIComponent(params.storeName) },
     include: { products: true },
