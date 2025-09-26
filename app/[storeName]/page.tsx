@@ -5,14 +5,18 @@ import { notFound } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
+type PageProps = {
+  params: { storeName: string };
+};
 
-export default async function Storefront ({ params }: { params: { storeName: string } }) {
+export default async function Storefront({ params }: PageProps) {
+  const { storeName } = await params; 
   const store = await prisma.store.findFirst({
     where: { name: decodeURIComponent(params.storeName) },
     include: { products: true },
   });
 
-  if (!store) {return <div>Store not found</div>;}
+  if (!store) return notFound();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
