@@ -1,18 +1,13 @@
-// app/[storeName]/page.tsx
-import { Prisma, PrismaClient } from '@/lib/generated/prisma';
-// import { Props } from 'next/dist/client/script';
+import { PrismaClient } from '@/lib/generated/prisma';
 import { notFound } from 'next/navigation';
 
 const prisma = new PrismaClient();
 
-type PageProps = {
-  params: { storeName: string };
-};
+export default async function Storefront({ params }: { params: { storeName: string } }) {
+  const { storeName } = await params;
 
-export default async function Storefront({ params }: PageProps) {
-  const { storeName } = await params; 
   const store = await prisma.store.findFirst({
-    where: { name: decodeURIComponent(params.storeName) },
+    where: { name: decodeURIComponent(storeName) },
     include: { products: true },
   });
 
@@ -25,7 +20,7 @@ export default async function Storefront({ params }: PageProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1  className="italic text-3xl font-bold text-gray-900">{store.name}</h1>
+              <h1 className="italic text-3xl font-bold text-gray-900">{store.name}</h1>
               <p className="text-gray-600 mt-1">Premium Products Collection</p>
             </div>
             <div className="flex items-center space-x-4">
@@ -67,7 +62,7 @@ export default async function Storefront({ params }: PageProps) {
                   <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
                     {product.name}
                   </h3>
-                  
+
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-2xl font-bold text-green-600">
                       ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
