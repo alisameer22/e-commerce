@@ -15,7 +15,7 @@ export default async function Storefront({ params }: PageProps) {
     include: { products: true },
   });
 
-  if (!store) return notFound();
+  if (!store) {return <div>Store not found</div>;}
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
