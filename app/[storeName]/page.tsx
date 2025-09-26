@@ -1,6 +1,10 @@
 // app/[storeName]/page.tsx
 import { Prisma, PrismaClient } from '@/lib/generated/prisma';
 import { notFound } from 'next/navigation';
+import CartProvider from '../components/CartProvider';
+import CartButton from '../components/CartButton';
+import ProductCard from '../components/ProductCard';
+import CartModal from '../components/CartModal';
 
 const prisma = new PrismaClient();
 
@@ -20,94 +24,71 @@ export default async function Storefront({ params }: PageProps) {
   if (!store) return notFound();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1  className="italic text-3xl font-bold text-gray-900">{store.name}</h1>
-              <p className="text-gray-600 mt-1">Premium Products Collection</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                {store.products.length} Products
+    <CartProvider>
+      <div className="min-h-screen bg-white">
+        {/* Header */}
+        <header className="border-b-4 border-black bg-white sticky top-0 z-40">
+          <div className="max-w-6xl mx-auto px-6 py-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-5xl font-black uppercase tracking-tight text-black">
+                  {store.name}
+                </h1>
+                <div className="mt-2 bg-black text-white px-3 py-1 inline-block font-mono text-sm">
+                  PREMIUM COLLECTION
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="bg-yellow-400 text-black px-6 py-3 font-black text-lg border-4 border-black transform rotate-2">
+                  {store.products.length} ITEMS
+                </div>
+                <CartButton />
               </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {store.products.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-gray-400 text-6xl mb-4">🏪</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No products yet</h3>
-            <p className="text-gray-600">Check back soon for new arrivals!</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {store.products.map((product) => (
-              <div
-                key={product.id}
-                className="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl hover:border-blue-300 transition-all duration-300 transform hover:-translate-y-1"
-              >
-                {/* Product Image */}
-                <div className="relative h-48 bg-gray-100 overflow-hidden">
-                  <img
-                    src={product.image || '/placeholder-product.jpg'}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-300" />
-                </div>
-
-                {/* Product Details */}
-                <div className="p-5">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                    {product.name}
-                  </h3>
-                  
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-2xl font-bold text-green-600">
-                      ${typeof product.price === 'number' ? product.price.toFixed(2) : product.price}
-                    </span>
-                    <div className="flex items-center space-x-1">
-                      <span className="text-yellow-400">★</span>
-                      <span className="text-sm text-gray-600">4.5</span>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {product.description || 'No description available'}
-                  </p>
-
-                  {/* Action Buttons */}
-                  <div className="flex space-x-2">
-                    <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                      Add to Cart
-                    </button>
-                    <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                      ❤️
-                    </button>
-                  </div>
-                </div>
+        {/* Main Content */}
+        <main className="max-w-6xl mx-auto px-6 py-12">
+          {store.products.length === 0 ? (
+            <div className="text-center py-24">
+              <div className="bg-black text-white p-8 inline-block transform -rotate-1">
+                <div className="text-6xl mb-4">🏪</div>
+                <h3 className="text-2xl font-black uppercase">NO PRODUCTS</h3>
               </div>
-            ))}
-          </div>
-        )}
-      </main>
+              <p className="text-xl font-mono mt-6">COMING SOON...</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {store.products.map((product, index) => (
+                <ProductCard key={product.id} product={product} index={index} />
+              ))}
+            </div>
+          )}
+        </main>
 
-      {/* Footer */}
-      <footer className="bg-white border-t mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-gray-600">
-            <p>© 2024 {store.name}. All rights reserved.</p>
-            <p className="mt-2 text-sm">Secure shopping • Fast delivery • Easy returns</p>
+        <CartModal />
+
+        {/* Footer */}
+        <footer className="border-t-4 border-black bg-black text-white mt-16">
+          <div className="max-w-6xl mx-auto px-6 py-8">
+            <div className="text-center">
+              <div className="inline-flex items-center space-x-2 mb-4">
+                <div className="w-4 h-4 bg-yellow-400"></div>
+                <p className="font-black text-lg uppercase tracking-wide">
+                  © 2024 {store.name}
+                </p>
+                <div className="w-4 h-4 bg-red-500"></div>
+              </div>
+              <div className="flex justify-center space-x-8 font-mono text-sm">
+                <span className="bg-white text-black px-3 py-1">SECURE</span>
+                <span className="bg-white text-black px-3 py-1">FAST</span>
+                <span className="bg-white text-black px-3 py-1">EASY</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </CartProvider>
   );
-};
+}
