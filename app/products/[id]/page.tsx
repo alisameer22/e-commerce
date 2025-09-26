@@ -5,12 +5,12 @@ import { notFound } from 'next/navigation';
 const prisma = new PrismaClient();
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function ProductPage({ params }: PageProps) {
   const product = await prisma.product.findUnique({
-    where: { id: params.id },
+    where: { id: (await params).id },
   });
 
   if (!product) return notFound();
