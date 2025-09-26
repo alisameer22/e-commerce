@@ -1,8 +1,7 @@
 // app/admin/products/page.tsx (Server Component)
 import { cookies } from 'next/headers';
-import { Prisma, PrismaClient } from '@/lib/generated/prisma';
+import {  PrismaClient } from '@/lib/generated/prisma';
 import jwt from 'jsonwebtoken';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
 const prisma = new PrismaClient();

@@ -1,6 +1,6 @@
 // app/api/products/route.ts
 
-import { Prisma, PrismaClient } from '@/lib/generated/prisma';
+import { PrismaClient } from '@/lib/generated/prisma';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
@@ -13,9 +13,11 @@ async function getStoreIdFromToken(): Promise<string | null> {
   if (!token) return null;
 
   try {
-    const payload: any = jwt.verify(token, process.env.JWT_SECRET!);
+    type NewType = any;
+
+    const payload: NewType = jwt.verify(token, process.env.JWT_SECRET!);
     return payload.storeId;
-  } catch (e) {
+  } catch {
     return null;
   }
 }

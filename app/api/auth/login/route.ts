@@ -1,5 +1,5 @@
 // app/api/auth/login/route.ts
-import { Prisma, PrismaClient } from '@/lib/generated/prisma';
+import {  PrismaClient } from '@/lib/generated/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';

@@ -3,9 +3,8 @@
 // This route handles user registration, including email and password validation,
 // password hashing, and storing user data in the database.
 
-import { Prisma, PrismaClient } from '@/lib/generated/prisma';
+import { PrismaClient } from '@/lib/generated/prisma';
 import bcrypt from 'bcryptjs';
-import { error } from 'console';
 import jwt from 'jsonwebtoken';
 import { NextResponse } from 'next/server';
 

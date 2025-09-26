@@ -1,5 +1,5 @@
 // app/[storeName]/page.tsx
-import { Prisma, PrismaClient } from '@/lib/generated/prisma';
+import {  PrismaClient } from '@/lib/generated/prisma';
 import { notFound } from 'next/navigation';
 import CartProvider from '../components/CartProvider';
 import CartButton from '../components/CartButton';
