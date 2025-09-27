@@ -60,6 +60,14 @@ export default function ResponsiveSidebar({
               <Package className="w-5 h-5" />
               <span>PRODUCTS</span>
             </Link>
+            <Link 
+              href="/admin/products/ORDERS"
+              className="w-full bg-white text-black p-3 font-black uppercase text-sm border-3 border-yellow-400 flex items-center space-x-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Package className="w-5 h-5" />
+              <span>ORDERS</span>
+            </Link>
 
             <form action="/api/auth/logout" method="POST" className="w-full">
               <button 
@@ -108,7 +116,14 @@ export default function ResponsiveSidebar({
               <Package className="w-6 h-6" />
               <span>PRODUCTS</span>
             </Link>
-
+<Link 
+              href="/admin/products/orders"
+              className="w-full black text-white p-3 font-black uppercase text-sm border-3 border-yellow-400 flex items-center space-x-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Package className="w-5 h-5" />
+              <span>ORDERS</span>
+            </Link>
             <form action="/api/auth/logout" method="POST" className="w-full">
               <button 
                 type="submit"
