@@ -16,7 +16,7 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
-      router.push('/admin/products/new');
+      router.push('/admin/products/');
     } else {
       alert('Invalid credentials');
     }
@@ -57,18 +57,15 @@ export default function LoginPage() {
         <button className="w-full bg-black text-white text-xl font-black uppercase py-4 px-6 border-3 border-black hover:bg-white hover:text-black transition-colors duration-200 shadow-[4px_4px_0px_0px_#666666] hover:shadow-[4px_4px_0px_0px_#000000] active:translate-x-1 active:translate-y-1 active:shadow-[2px_2px_0px_0px_#000000]"
         >Login</button>
       </form>
-      <div className="mt-8 flex justify-between items-center">
+      <div className="mt-9 flex justify-between items-center">
             <div className="w-8 h-8 bg-black"></div>
-            <h1 className="text-lg font-bold">OR</h1>
-            <div className="w-8 h-8 bg-black"></div>
-          </div>
-          <div className="mt-8 flex justify-between items-center">
+            <h1 className="text-xs font-mono uppercase tracking-widest opacity-80 ">no account? </h1>
             <button
               type="button"
-              className="text-xs font-mono uppercase tracking-widest opacity-80 hover:underline"
+              className="text-xs font-mono uppercase tracking-widest opacity-100 hover:underline"
               onClick={() => router.push('/signup')}
             >
-              Sign Up
+              Sign Up!
             </button>
             <div className="w-8 h-8 bg-yellow-300 border-2 border-black"></div>
           </div>

@@ -1,8 +1,13 @@
 'use client';
-
+import { PrismaClient } from '@/lib/generated/prisma';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Trash2, Edit, Plus, LogOut, Store, Package } from 'lucide-react';
+import ClientSidebar from '../components/ResponsiveSidebar';
+import ResponsiveSidebar from '../components/ResponsiveSidebar';
+
+const prisma = new PrismaClient();
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -12,6 +17,7 @@ export default function NewProductPage() {
     price: '',
     image: '',
   });
+  
 
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,22 +33,37 @@ export default function NewProductPage() {
   };
 
   return (
-    <div className="p-6">
-      <Link className="bg-black text-white px-1 py-1 rounded" href={'/admin/products/'} > see products </Link>
-      <h1 className="text-xl font-bold mb-4">Create New Product</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="min-h-screen bg-yellow-200">
+      <ResponsiveSidebar storeName={Store ? Store.name : 'STORE'} />
+      {/* Main Content */}
+       <div className="lg:ml-72 ml-0 pt-16 lg:pt-0">
+        {/* Header */}
+        <header className="bg-white border-b-8 border-black p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-black uppercase tracking-tight text-black mb-2">
+                ADD NEW PRODUCT
+              </h1>
+              
+            </div>
+
+          </div>
+        </header>
+        {/* Products Grid */}
+        <main className="p-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
         <input
           name="name"
           placeholder="Product Name"
           onChange={handleChange}
-          className="border p-2 w-full"
+          className="w-full p-4 border-3 border-black bg-white text-lg font-mono focus:outline-none focus:shadow-[4px_4px_0px_0px_#000000] transition-shadow"
           required
         />
         <input
           name="description"
           placeholder="Description"
           onChange={handleChange}
-          className="border p-2 w-full"
+          className="w-full p-4 border-3 border-black bg-white text-lg font-mono focus:outline-none focus:shadow-[4px_4px_0px_0px_#000000] transition-shadow"
           required
         />
         <input
@@ -50,23 +71,31 @@ export default function NewProductPage() {
           type="number"
           placeholder="Price"
           onChange={handleChange}
-          className="border p-2 w-full"
+          className="w-full p-4 border-3 border-black bg-white text-lg font-mono focus:outline-none focus:shadow-[4px_4px_0px_0px_#000000] transition-shadow"
           required
         />
         <input
           name="image"
           placeholder="Image URL"
           onChange={handleChange}
-          className="border p-2 w-full"
+          className="w-full p-4 border-3 border-black bg-white text-lg font-mono focus:outline-none focus:shadow-[4px_4px_0px_0px_#000000] transition-shadow"
           required
         />
+        <div className="flex space-x-4">
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          className="flex-1 bg-blue-500 text-white p-4 font-black uppercase border-3 border-black hover:bg-white hover:text-blue-500 transition-colors disabled:opacity-50"
         >
           Add Product
-        </button>
-      </form>
+        </button><Link
+          href="/admin/products"
+          className="flex-1 bg-gray-500 text-white p-4 font-black uppercase border-3 border-black hover:bg-white hover:text-gray-500 transition-colors flex items-center justify-center"
+        >
+          CANCEL
+        </Link></div>
+        
+      </form></main>
+    </div>
     </div>
   );
 }
